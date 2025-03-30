@@ -27,7 +27,7 @@ This is a simple backend project built with `Flask`, implementing an authenticat
 1. **Clone the repository**:
    ```bash
    git clone https://github.com/kateutkate23/flask-jwt-auth
-   cd flask-auth-project
+   cd flask-jwt-auth
    ```
 2. **Create and activate a virtual environment:**
    ```bash
