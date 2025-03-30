@@ -25,6 +25,15 @@ def generate_tokens(user: User) -> tuple[str, str]:
     return access_token, refresh_token
 
 
+# возможные утечки токенов:
+# 1) перехват при передаче через HTTP
+# 2) утечка через Redis, если он не будет защищен
+#
+# способы защиты:
+# 1) использование HTTPS
+# 2) ограничение времени жизни токенов (реализовано)
+# 3) защита Redis
+
 def add_user_to_whitelist(user_id: int, token: str) -> None:
     current_app.redis.setex(
         f"whitelist-{token}",
