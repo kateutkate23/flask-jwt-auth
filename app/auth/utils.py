@@ -29,3 +29,15 @@ def add_user_to_whitelist(user_id: int, token: str) -> None:
         current_app.config["ACCESS_TOKEN_EXPIRE_MINUTES"] * 60,
         user_id
     )
+
+
+def add_user_to_blacklist(token: str) -> None:
+    current_app.redis.setex(
+        f"blacklist-{token}",
+        current_app.config["ACCESS_TOKEN_EXPIRE_MINUTES"] * 60,
+        "blacklisted"
+    )
+
+
+def is_in_blacklist(token: str) -> bool:
+    return current_app.redis.exists(f"blacklist-{token}")

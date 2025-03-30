@@ -4,6 +4,8 @@ from typing import Callable
 from flask import request, jsonify, current_app
 import jwt
 
+from app.auth.utils import is_in_blacklist
+
 
 # проверка наличия токена
 def token_required(f: Callable) -> Callable:
@@ -15,6 +17,9 @@ def token_required(f: Callable) -> Callable:
 
         if not token:
             return jsonify({"message": "token is missing"}), 401
+
+        if is_in_blacklist(token):
+            return jsonify({"message": "token is in blacklist"}), 401
 
         try:
             decoded_token = jwt.decode(token, current_app.config["SECRET_KEY"], algorithms=["HS256"])

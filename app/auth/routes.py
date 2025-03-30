@@ -1,7 +1,7 @@
 from flask import Blueprint, request, jsonify
 
-from app.auth.utils import generate_tokens, add_user_to_whitelist
-from app.middleware import role_required
+from app.auth.utils import generate_tokens, add_user_to_whitelist, add_user_to_blacklist
+from app.middleware import role_required, token_required
 from app.models.user import User
 
 auth_bp = Blueprint("auth", __name__)
@@ -35,6 +35,7 @@ def login() -> jsonify():
     )
 
 
+# 2 примера маршрутов, доступных только пользователю с указанной ролью
 @auth_bp.route("/first-role", methods=["GET"])
 @role_required(1)
 def first_role_example() -> jsonify():
@@ -45,3 +46,11 @@ def first_role_example() -> jsonify():
 @role_required(2)
 def second_role_example() -> jsonify():
     return jsonify({"message": "route available for second role"})
+
+
+@auth_bp.route("/logout", methods=["POST"])
+@token_required
+def logout() -> jsonify():
+    token = request.headers["Authorization"].split(" ")[1]
+    add_user_to_blacklist(token)
+    return jsonify({"message": "logout successful"})
