@@ -7,7 +7,7 @@ class App(Flask):
     redis: redis.Redis
 
 
-def create_app():
+def create_app() -> App:
     app = App(__name__)
     app.config.from_object(Config)
 

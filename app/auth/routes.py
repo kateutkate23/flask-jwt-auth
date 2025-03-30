@@ -8,12 +8,12 @@ auth_bp = Blueprint('auth', __name__)
 
 # тестовый route для проверки работы redis
 @auth_bp.route('/ping', methods=['GET'])
-def ping():
+def ping() -> dict:
     return {"message": "server is running"}
 
 
 @auth_bp.route('/login', methods=['POST'])
-def login():
+def login() -> jsonify():
     data = request.get_json()
     username = data.get('username')
     password = data.get('password')

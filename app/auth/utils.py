@@ -3,8 +3,10 @@ from datetime import datetime, timedelta, timezone
 
 from flask import current_app
 
+from app.models.user import User
 
-def generate_tokens(user):
+
+def generate_tokens(user: User) -> tuple[str, str]:
     access = {
         "user_id": user.id,
         "role_number": user.role_number,
@@ -21,7 +23,7 @@ def generate_tokens(user):
     return access_token, refresh_token
 
 
-def add_user_to_whitelist(user_id, token):
+def add_user_to_whitelist(user_id: int, token: str) -> None:
     current_app.redis.setex(
         f"whitelist-{token}",
         current_app.config["ACCESS_TOKEN_EXPIRE_MINUTES"] * 60,
