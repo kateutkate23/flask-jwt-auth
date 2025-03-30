@@ -14,7 +14,7 @@ def ping() -> dict:
 
 
 @auth_bp.route("/login", methods=["POST"])
-def login() -> jsonify():
+def login():
     data = request.get_json()
     username = data.get("username")
     password = data.get("password")
@@ -38,19 +38,19 @@ def login() -> jsonify():
 # 2 примера маршрутов, доступных только пользователю с указанной ролью
 @auth_bp.route("/first-role", methods=["GET"])
 @role_required(1)
-def first_role_example() -> jsonify():
+def first_role_example():
     return jsonify({"message": "route available for first role"})
 
 
 @auth_bp.route("/second-role", methods=["GET"])
 @role_required(2)
-def second_role_example() -> jsonify():
+def second_role_example():
     return jsonify({"message": "route available for second role"})
 
 
 @auth_bp.route("/logout", methods=["POST"])
 @token_required
-def logout() -> jsonify():
-    token = request.headers["Authorization"].split(" ")[1]
+def logout():
+    token = request.headers["Authorization"]
     add_user_to_blacklist(token)
     return jsonify({"message": "logout successful"})

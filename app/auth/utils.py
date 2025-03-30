@@ -10,13 +10,15 @@ def generate_tokens(user: User) -> tuple[str, str]:
     access = {
         "user_id": user.id,
         "role_number": user.role_number,
-        "expires_at": datetime.now(timezone.utc) + timedelta(minutes=current_app.config["ACCESS_TOKEN_EXPIRE_MINUTES"])
+        "expires_at": (datetime.now(timezone.utc) + timedelta(
+            minutes=current_app.config["ACCESS_TOKEN_EXPIRE_MINUTES"])).strftime("%m/%d/%Y %I:%M:%S"),
     }
     access_token = jwt.encode(access, current_app.config["SECRET_KEY"], algorithm="HS256")
 
     refresh = {
         "user_id": user.id,
-        "expires_at": datetime.now(timezone.utc) + timedelta(days=current_app.config["REFRESH_TOKEN_EXPIRE_DAYS"])
+        "expires_at": (datetime.now(timezone.utc) + timedelta(
+            days=current_app.config["REFRESH_TOKEN_EXPIRE_DAYS"])).strftime("%m/%d/%Y %I:%M:%S"),
     }
     refresh_token = jwt.encode(refresh, current_app.config["SECRET_KEY"], algorithm="HS256")
 
