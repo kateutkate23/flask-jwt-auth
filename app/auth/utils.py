@@ -19,3 +19,11 @@ def generate_tokens(user):
     refresh_token = jwt.encode(refresh, current_app.config["SECRET_KEY"], algorithm="HS256")
 
     return access_token, refresh_token
+
+
+def add_user_to_whitelist(user_id, token):
+    current_app.redis.setex(
+        f"whitelist-{token}",
+        current_app.config["ACCESS_TOKEN_EXPIRE_MINUTES"] * 60,
+        user_id
+    )

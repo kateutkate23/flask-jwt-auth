@@ -9,6 +9,7 @@ class User:
     password: str
     role_number: int
 
+    # заглушка для поиска по имени пользователя
     @staticmethod
     def find_by_username(username: str) -> User | None:
         if username == "testuser":
