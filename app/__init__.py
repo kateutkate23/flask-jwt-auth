@@ -3,8 +3,12 @@ import redis
 from .config import Config
 
 
+class App(Flask):
+    redis: redis.Redis
+
+
 def create_app():
-    app = Flask(__name__)
+    app = App(__name__)
     app.config.from_object(Config)
 
     app.redis = redis.Redis(
